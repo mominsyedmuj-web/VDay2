@@ -21,6 +21,7 @@
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       max-width: 400px;
+      position: relative;
     }
 
     h1 {
@@ -44,6 +45,7 @@
     .no {
       background: #adb5bd;
       color: white;
+      position: absolute;
     }
 
     img {
@@ -58,24 +60,30 @@
   <div class="card" id="content">
     <h1>Will you be my Valentine? 💌</h1>
     <button class="yes" onclick="sayYes()">Yes 💖</button>
-    <button class="no" onclick="sayNo()">No 🙈</button>
+    <button class="no" id="noBtn" onmouseover="moveNo()">No 🙈</button>
   </div>
 
   <script>
     function sayYes() {
       document.getElementById("content").innerHTML = `
         <h1>YAY!!! 🥰💖</h1>
-        <p>You just made me the happiest person ever.</p>
-        <img src="https://media.giphy.com/media/3oz8xIsloV7zOmt81G/giphy.gif" alt="Cute celebration gif">
+        <p>You said yes! I’m so happy ❤️</p>
+        <img src="https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif" alt="Cute celebration gif">
       `;
     }
 
-    function sayNo() {
-      document.getElementById("content").innerHTML = `
-        <h1>😢</h1>
-        <p>Okay… but are you sure?</p>
-        <button class="yes" onclick="sayYes()">Yes 💖</button>
-      `;
+    function moveNo() {
+      const btn = document.getElementById("noBtn");
+      const card = document.querySelector(".card");
+
+      const maxX = card.clientWidth - btn.offsetWidth;
+      const maxY = card.clientHeight - btn.offsetHeight;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
     }
   </script>
 
