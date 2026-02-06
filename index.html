@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💖 Valentine?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      max-width: 400px;
+    }
+
+    h1 {
+      color: #e63946;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .yes {
+      background: #e63946;
+      color: white;
+    }
+
+    .no {
+      background: #adb5bd;
+      color: white;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="content">
+    <h1>Will you be my Valentine? 💌</h1>
+    <button class="yes" onclick="sayYes()">Yes 💖</button>
+    <button class="no" onclick="sayNo()">No 🙈</button>
+  </div>
+
+  <script>
+    function sayYes() {
+      document.getElementById("content").innerHTML = `
+        <h1>YAY!!! 🥰💖</h1>
+        <p>You just made me the happiest person ever.</p>
+        <img src="https://media.giphy.com/media/3oz8xIsloV7zOmt81G/giphy.gif" alt="Cute celebration gif">
+      `;
+    }
+
+    function sayNo() {
+      document.getElementById("content").innerHTML = `
+        <h1>😢</h1>
+        <p>Okay… but are you sure?</p>
+        <button class="yes" onclick="sayYes()">Yes 💖</button>
+      `;
+    }
+  </script>
+
+</body>
+</html>
