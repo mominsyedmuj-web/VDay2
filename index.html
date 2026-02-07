@@ -1,63 +1,106 @@
-<script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.querySelector(".yes");
-const container = document.getElementById("buttonContainer");
-
-container.addEventListener("mousemove", (e) => {
-  const rect = noBtn.getBoundingClientRect();
-  const buffer = 50; // distance in px to start moving
-
-  if (
-    e.clientX >= rect.left - buffer &&
-    e.clientX <= rect.right + buffer &&
-    e.clientY >= rect.top - buffer &&
-    e.clientY <= rect.bottom + buffer
-  ) {
-    moveNo(e);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>💖 Valentine?</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
   }
-});
 
-function moveNo(event) {
-  const btn = noBtn;
+  .card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 400px;
+    position: relative;
+  }
 
-  btn.style.position = "absolute";
+  h1 {
+    color: #e63946;
+    margin-bottom: 20px;
+  }
 
-  const containerRect = container.getBoundingClientRect();
-  const yesRect = yesBtn.getBoundingClientRect();
+  button {
+    padding: 14px 28px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    margin: 10px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+  }
 
-  // Container dimensions
-  const maxX = container.clientWidth - btn.offsetWidth;
-  const maxY = container.clientHeight - btn.offsetHeight;
+  .yes {
+    background: #e63946;
+    color: white;
+    box-shadow: 0 5px 15px rgba(230,57,70,0.4);
+  }
 
-  // Compute Yes button position relative to container
-  const yesTop = yesRect.top - containerRect.top;
-  const yesHeight = yesRect.height;
+  .yes:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(230,57,70,0.6);
+  }
 
-  let newX, newY;
+  .no {
+    background: #adb5bd;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 5px 15px rgba(173,181,189,0.4);
+  }
 
-  do {
-    // Random horizontal position
-    newX = Math.random() * maxX;
+  .no:hover {
+    background: #868e96;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
 
-    // Random vertical position, but always below Yes button
-    newY = yesTop + yesHeight + Math.random() * (maxY - (yesTop + yesHeight));
+  img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="card" id="content">
+  <h1>Miss Bea Samantha San Juan Pelingen, will you be my Valentine? 💌</h1>
+  <div class="buttons">
+    <button class="yes" onclick="sayYes()">Yes 💖</button>
+    <button class="no" id="noBtn" onmouseover="moveNo()">No 🙈</button>
+  </div>
+</div>
 
-    // Ensure newY is within container bounds
-    if (newY > maxY) newY = maxY;
-  } while (
-    Math.abs(newX - (event.clientX - containerRect.left)) < 80 &&
-    Math.abs(newY - (event.clientY - containerRect.top)) < 80
-  );
-
-  btn.style.left = newX + "px";
-  btn.style.top = newY + "px";
-}
-
+<script>
 function sayYes() {
   document.getElementById("content").innerHTML = `
     <h1>LETS GOOO!!! 🥰💖</h1>
-    <p>Happy Valentines day lil buddy 😋😋</p>
+    <p>You said yes! I’m so happy 😋😋😍😍😍</p>
     <img src="https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif" alt="Cute celebration gif">
   `;
 }
+
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  const card = document.querySelector(".card");
+  const maxX = card.clientWidth - btn.offsetWidth;
+  const maxY = card.clientHeight - btn.offsetHeight;
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+  btn.style.left = x + "px";
+  btn.style.top = y + "px";
+}
 </script>
+</body>
+</html>
