@@ -29,6 +29,10 @@
     margin-bottom: 20px;
   }
 
+  .buttons {
+    position: relative; /* relative container for No button */
+  }
+
   button {
     padding: 14px 28px;
     font-size: 16px;
@@ -54,16 +58,13 @@
   .no {
     background: #adb5bd;
     color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative; /* initially relative to stay inline */
     box-shadow: 0 5px 15px rgba(173,181,189,0.4);
   }
 
   .no:hover {
     background: #868e96;
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: scale(1.1);
   }
 
   img {
@@ -94,10 +95,16 @@ function sayYes() {
 function moveNo() {
   const btn = document.getElementById("noBtn");
   const card = document.querySelector(".card");
+  
+  // switch to absolute positioning only when moving
+  btn.style.position = "absolute";
+
   const maxX = card.clientWidth - btn.offsetWidth;
   const maxY = card.clientHeight - btn.offsetHeight;
+
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
+
   btn.style.left = x + "px";
   btn.style.top = y + "px";
 }
