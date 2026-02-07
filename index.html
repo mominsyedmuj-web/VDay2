@@ -44,19 +44,21 @@
       border: none;
       cursor: pointer;
       min-width: 110px;
-      transition: all 0.2s ease;
+      transition: all 0.1s ease; /* faster response */
     }
 
     .yes {
       background: #e63946;
       color: white;
-      position: relative; /* keep in normal flow */
+      position: relative;
+      z-index: 1; /* keep above no button */
     }
 
     .no {
       background: #adb5bd;
       color: white;
-      position: relative; /* start in normal flow */
+      position: relative; /* start in flow */
+      z-index: 2; /* move above yes when jumping */
     }
 
     img {
@@ -70,13 +72,32 @@
 
   <div class="card" id="content">
     <h1>Miss Bea Samantha San Juan Pelingen, will you be my Valentine? 💌</h1>
-    <div class="buttons">
+    <div class="buttons" id="buttonContainer">
       <button class="yes" onclick="sayYes()">Yes 💖</button>
-      <button class="no" id="noBtn" onmouseover="moveNo()">No 🙈</button>
+      <button class="no" id="noBtn">No 🙈</button>
     </div>
   </div>
 
   <script>
+    const noBtn = document.getElementById("noBtn");
+    const container = document.getElementById("buttonContainer");
+
+    // Move the button when the mouse gets close
+    container.addEventListener("mousemove", (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const buffer = 50; // distance in px to start moving
+
+      // Check if cursor is within buffer zone
+      if (
+        e.clientX >= rect.left - buffer &&
+        e.clientX <= rect.right + buffer &&
+        e.clientY >= rect.top - buffer &&
+        e.clientY <= rect.bottom + buffer
+      ) {
+        moveNo();
+      }
+    });
+
     function sayYes() {
       document.getElementById("content").innerHTML = `
         <h1>LETS GOOO!!! 🥰💖</h1>
@@ -86,20 +107,22 @@
     }
 
     function moveNo() {
-      const btn = document.getElementById("noBtn");
-      const container = btn.parentElement;
+      const btn = noBtn;
 
-      // Make the button absolute to move
-      btn.style.position = 'absolute';
+      // Make absolute so we can move freely
+      btn.style.position = "absolute";
 
-      const maxX = container.clientWidth - btn.offsetWidth;
-      const maxY = container.clientHeight - btn.offsetHeight;
+      const containerRect = container.getBoundingClientRect();
 
+      const maxX = container.clientWidth - btn.offsetWidth - 10; // 10px margin
+      const maxY = container.clientHeight - btn.offsetHeight - 10;
+
+      // Random position far enough from current cursor
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
 
-      btn.style.left = x + 'px';
-      btn.style.top = y + 'px';
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
     }
   </script>
 
