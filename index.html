@@ -1,139 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>💖 Valentine?</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.querySelector(".yes");
+const container = document.getElementById("buttonContainer");
 
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      max-width: 400px;
-      position: relative;
-    }
+container.addEventListener("mousemove", (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const buffer = 50; // distance in px to start moving
 
-    h1 {
-      color: #e63946;
-    }
+  if (
+    e.clientX >= rect.left - buffer &&
+    e.clientX <= rect.right + buffer &&
+    e.clientY >= rect.top - buffer &&
+    e.clientY <= rect.bottom + buffer
+  ) {
+    moveNo(e);
+  }
+});
 
-    .buttons {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 25px;
-      height: 60px;
-    }
+function moveNo(event) {
+  const btn = noBtn;
 
-    button {
-      padding: 12px 24px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      min-width: 110px;
-      transition: all 0.1s ease; /* faster response */
-    }
+  btn.style.position = "absolute";
 
-    .yes {
-      background: #e63946;
-      color: white;
-      position: relative; /* keep above no button */
-      z-index: 1;
-    }
+  const containerRect = container.getBoundingClientRect();
+  const yesRect = yesBtn.getBoundingClientRect();
 
-    .no {
-      background: #adb5bd;
-      color: white;
-      position: relative; /* start in flow */
-      z-index: 2; /* move above yes when jumping */
-    }
+  const maxX = container.clientWidth - btn.offsetWidth - 10;
+  const maxY = container.clientHeight - btn.offsetHeight - 10;
 
-    img {
-      max-width: 100%;
-      border-radius: 12px;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
+  const mouseX = event.clientX - containerRect.left;
+  const mouseY = event.clientY - containerRect.top;
 
-  <div class="card" id="content">
-    <h1>Miss Bea Samantha San Juan Pelingen, will you be my Valentine? 💌</h1>
-    <div class="buttons" id="buttonContainer">
-      <button class="yes" onclick="sayYes()">Yes 💖</button>
-      <button class="no" id="noBtn">No 🙈</button>
-    </div>
-  </div>
+  let newX, newY;
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
-    const container = document.getElementById("buttonContainer");
+  do {
+    newX = Math.random() * maxX;
 
-    // Move the button when the mouse gets close
-    container.addEventListener("mousemove", (e) => {
-      const rect = noBtn.getBoundingClientRect();
-      const buffer = 50; // distance in px to start moving
+    // Ensure No button stays below Yes button
+    const yesRelativeTop = yesRect.top - containerRect.top;
+    const yesHeight = yesRect.height;
+    newY = yesRelativeTop + yesHeight + Math.random() * (maxY - yesRelativeTop - yesHeight);
+  } while (
+    Math.abs(newX - mouseX) < 80 &&
+    Math.abs(newY - mouseY) < 80
+  );
 
-      // Check if cursor is within buffer zone
-      if (
-        e.clientX >= rect.left - buffer &&
-        e.clientX <= rect.right + buffer &&
-        e.clientY >= rect.top - buffer &&
-        e.clientY <= rect.bottom + buffer
-      ) {
-        moveNo(e);
-      }
-    });
+  btn.style.left = newX + "px";
+  btn.style.top = newY + "px";
+}
 
-    function sayYes() {
-      document.getElementById("content").innerHTML = `
-        <h1>LETS GOOO!!! 🥰💖</h1>
-        <p>You said yes! I’m so happy 😋😋😍😍😍</p>
-        <img src="https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif" alt="Cute celebration gif">
-      `;
-    }
-
-    function moveNo(event) {
-      const btn = noBtn;
-
-      // Make absolute so we can move freely
-      btn.style.position = "absolute";
-
-      const containerRect = container.getBoundingClientRect();
-      const maxX = container.clientWidth - btn.offsetWidth - 10;
-      const maxY = container.clientHeight - btn.offsetHeight - 10;
-
-      const mouseX = event.clientX - containerRect.left;
-      const mouseY = event.clientY - containerRect.top;
-
-      let newX, newY;
-
-      // Ensure button moves far enough from cursor
-      do {
-        newX = Math.random() * maxX;
-        newY = Math.random() * maxY;
-      } while (
-        Math.abs(newX - mouseX) < 80 &&
-        Math.abs(newY - mouseY) < 80
-      );
-
-      btn.style.left = newX + "px";
-      btn.style.top = newY + "px";
-    }
-  </script>
-
-</body>
-</html>
+function sayYes() {
+  document.getElementById("content").innerHTML = `
+    <h1>LETS GOOO!!! 🥰💖</h1>
+    <p>Happy Valentines day lil buddy 😋😋</p>
+    <img src="https://media.giphy.com/media/26FLdmIp6wJr91JAI/giphy.gif" alt="Cute celebration gif">
+  `;
+}
+</script>
