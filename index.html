@@ -50,8 +50,8 @@
     .yes {
       background: #e63946;
       color: white;
-      position: relative;
-      z-index: 1; /* keep above no button */
+      position: relative; /* keep above no button */
+      z-index: 1;
     }
 
     .no {
@@ -94,7 +94,7 @@
         e.clientY >= rect.top - buffer &&
         e.clientY <= rect.bottom + buffer
       ) {
-        moveNo();
+        moveNo(e);
       }
     });
 
@@ -106,23 +106,32 @@
       `;
     }
 
-    function moveNo() {
+    function moveNo(event) {
       const btn = noBtn;
 
       // Make absolute so we can move freely
       btn.style.position = "absolute";
 
       const containerRect = container.getBoundingClientRect();
-
-      const maxX = container.clientWidth - btn.offsetWidth - 10; // 10px margin
+      const maxX = container.clientWidth - btn.offsetWidth - 10;
       const maxY = container.clientHeight - btn.offsetHeight - 10;
 
-      // Random position far enough from current cursor
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+      const mouseX = event.clientX - containerRect.left;
+      const mouseY = event.clientY - containerRect.top;
 
-      btn.style.left = x + "px";
-      btn.style.top = y + "px";
+      let newX, newY;
+
+      // Ensure button moves far enough from cursor
+      do {
+        newX = Math.random() * maxX;
+        newY = Math.random() * maxY;
+      } while (
+        Math.abs(newX - mouseX) < 80 &&
+        Math.abs(newY - mouseY) < 80
+      );
+
+      btn.style.left = newX + "px";
+      btn.style.top = newY + "px";
     }
   </script>
 
