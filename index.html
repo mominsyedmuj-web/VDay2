@@ -25,24 +25,28 @@ function moveNo(event) {
   const containerRect = container.getBoundingClientRect();
   const yesRect = yesBtn.getBoundingClientRect();
 
-  const maxX = container.clientWidth - btn.offsetWidth - 10;
-  const maxY = container.clientHeight - btn.offsetHeight - 10;
+  // Container dimensions
+  const maxX = container.clientWidth - btn.offsetWidth;
+  const maxY = container.clientHeight - btn.offsetHeight;
 
-  const mouseX = event.clientX - containerRect.left;
-  const mouseY = event.clientY - containerRect.top;
+  // Compute Yes button position relative to container
+  const yesTop = yesRect.top - containerRect.top;
+  const yesHeight = yesRect.height;
 
   let newX, newY;
 
   do {
+    // Random horizontal position
     newX = Math.random() * maxX;
 
-    // Ensure No button stays below Yes button
-    const yesRelativeTop = yesRect.top - containerRect.top;
-    const yesHeight = yesRect.height;
-    newY = yesRelativeTop + yesHeight + Math.random() * (maxY - yesRelativeTop - yesHeight);
+    // Random vertical position, but always below Yes button
+    newY = yesTop + yesHeight + Math.random() * (maxY - (yesTop + yesHeight));
+
+    // Ensure newY is within container bounds
+    if (newY > maxY) newY = maxY;
   } while (
-    Math.abs(newX - mouseX) < 80 &&
-    Math.abs(newY - mouseY) < 80
+    Math.abs(newX - (event.clientX - containerRect.left)) < 80 &&
+    Math.abs(newY - (event.clientY - containerRect.top)) < 80
   );
 
   btn.style.left = newX + "px";
